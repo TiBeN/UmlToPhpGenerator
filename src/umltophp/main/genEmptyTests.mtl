@@ -1,0 +1,55 @@
+[comment encoding = UTF-8 /]
+[module genEmptyTests('http://www.eclipse.org/uml2/4.0.0/UML')]
+[import umltophp::main::commons /]
+
+[ comment 
+	Generate PHP classes tests from model Class.
+	The tests class are PHPUnit compliant
+	Classes must be in a Package otherwise they will be ignored.
+	Classes without operations are considered Object values classes and will be ignored.  
+ /]
+[template public genPhpEmptyClassTestFile(aClass : Class)]
+[file (aClass.getTestFilePath(), false, 'UTF-8')]
+<?php 
+	
+namespace [aClass.getTestNamespacePath()/];
+
+use [aClass.getUsePath()/];
+ 
+/** 
+ * Test cases for class [aClass.name.toUpperFirst()/]
+ * 
+ * @runTestsInSeparateProcesses
+ * @author TiBeN
+ */ 
+class [aClass.name.toUpperFirst()/]Test extends PHPUnit_Framework_TestCase  {
+
+	public function setUp() 
+	{		
+		/* Launch the Framework Bootstrap Initialisation */
+		$boot = new Bootstrap();
+		$boot->init(dirname(__FILE__).'/../fixture/app_for_test', Bootstrap::RUNTIME_MODE_HTTP);
+
+		// [protected (aClass.name.concat('Test.setUp'))]
+		// Place additional setUp code here.  
+		// [/protected]			
+
+	}	
+
+	public function tearDown() {
+
+		// [protected (aClass.name.concat('Test.tearDown'))]
+		// Place additional tearDown code here.  
+		// [/protected]			
+		
+	}
+
+	// [protected (aClass.name.concat('Test'))]	  
+	// [/protected]			
+		
+}
+[/file]
+[/template]
+[ comment 
+	Generate PHP Test Methods
+ /]
