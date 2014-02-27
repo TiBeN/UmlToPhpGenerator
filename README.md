@@ -57,9 +57,12 @@ Note: This could be really improved using Maven. (see TODO.md)
 
 ## Some notes about this project.
 For the sake of the design of a web Framework i started to make some diagrams for modeling the components of the framework by using Eclipse Papyrus. I read at the same time a lot of articles about design and especially on MDA/MDE methodologies. The case of this web framework was a great "pretext" to go a bit further into my discovery of the MDE design. 
+
 So I've started to integrate the auto generation ("model to text") of class skeletons of this project into my workflow. For this purpose the eclipse EMF platform hosts a very good plugin named "Acceleo". The aim is to orchestrate the generation of formated text file (code, documentation, sql statements and so on..) from any ecore compatible models. The generation is done using templates written in "MOF2Text" language wich is an OMG language specification. 
+
 The initial complexity of the eclipse modeling tools and environnment is a little bit frustrating but, once this gap passed, the workflow is very effective. 
 I started to write some simple acceleo template in order to convert my framework's UML model into PHP classes. As my initial project evolve i encountered a lot of different cases to handle like generating interfaces, class extends, interface implementation, template typed classes, multiplicity and so on, making the generator more and more generic and become usable for differents kinds of projects. 
+
 So, despite some issues about the build, the lack of documentation and the need of some minor improvements to be used in production i decided to share it on github.
 
 
