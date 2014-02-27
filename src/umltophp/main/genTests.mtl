@@ -1,0 +1,102 @@
+[comment encoding = UTF-8 /]
+[module genTests('http://www.eclipse.org/uml2/4.0.0/UML')]
+[import umltophp::main::commons /]
+
+[ comment 
+	Generate PHP classes tests from model Class.
+	The tests class are PHPUnit compliant
+	Classes must be in a Package otherwise they will be ignored.
+	Classes without operations are considered Object values classes and will be ignored.  
+ /]
+[template public genPhpClassTestFile(aClass : Class) ? (aClass.ownedOperation->notEmpty() or aClass.clientDependency->filter(Realization).supplier->filter(Interface).ownedOperation->notEmpty())]
+[file (aClass.getTestFilePath(), false, 'UTF-8')]
+<?php
+	
+namespace [aClass.getTestNamespacePath()/];
+
+use [aClass.getUsePath()/];
+
+/** 
+ * Test cases for class [aClass.name.toUpperFirst()/]
+ * 
+ * @runTestsInSeparateProcesses	 
+ *
+ * @author TiBeN
+ */ 
+class [aClass.name.toUpperFirst()/]Test extends PHPUnit_Framework_TestCase
+{
+	// [protected (aClass.name.concat('Test.attributes'))]
+	// Place additional tests attributes here.  
+	// [/protected]			
+
+	public function setUp() 
+	{		
+		/* Launch the Framework Bootstrap Initialisation */
+		$boot = new Bootstrap();
+		$boot->init(dirname(__FILE__).'/[for (sPackage : Package | aClass.ancestors(Package)->drop(1))]../[/for]fixture/app_for_test', Bootstrap::RUNTIME_MODE_HTTP);
+
+		// [protected (aClass.name.concat('Test.setUp'))]
+		// Place additional setUp code here.  
+		// [/protected]
+	}	
+
+	public function tearDown() 
+	{
+		// [protected (aClass.name.concat('Test.tearDown'))]
+		// Place additional tearDown code here.  
+		// [/protected]					
+	}
+
+	[aClass.getOperations().genPhpTestMethods() /][for (aInterface : Interface | aClass.getImplementedInterfaces()->filter(Interface))][aInterface.getAllOperations().genPhpTesRealizationtMethods() /][/for]
+	// [protected (aClass.name.concat('Test.methods'))]
+	// Place additional tests methods here.  
+	// [/protected]						
+}
+[/file]
+[/template]
+[ comment 
+	Generate PHP Test Methods
+ /]
+[template private genPhpTestMethods(operations : Operation)]
+[for (o: Operation | operations)]
+
+/**
+ * Test [if (o.isStatic = true)]static[/if] method [o.name/] from class [o.class.name /]
+ * 
+ * [protected (o.class.name.concat('Test.test'.concat(o.name).concat('Annotations')))] 
+ * PHPUnit users annotations can be placed here  
+ * [/protected]
+ */
+public function test[o.name.toUpperFirst()/]() 
+{
+	// [protected (o.class.name.concat('Test.test'.concat(o.name)))]
+    $this->markTestIncomplete(
+      'This test has not been implemented yet.'
+    );
+	// [/protected]	
+}
+[/for]
+[/template]
+
+[ comment 
+	Generate PHP Test Realization Methods
+ /]
+[template private genPhpTesRealizationtMethods(operations : Operation)]
+[for (o: Operation | operations)]
+
+/**
+ * Test [if (o.isStatic = true)]static [/if]method [o.name/] from interface [o.interface.name /] 
+ * [protected (o.interface.name.concat('.test'.concat(o.name).concat('Annotations')))] 
+ * PHPUnit users annotations can be placed here  
+ * [/protected]
+ */
+public function test[o.name.toUpperFirst()/]() 
+{
+	// [protected (o.interface.name.concat('.test'.concat(o.name)))]
+    $this->markTestIncomplete(
+      'This test has not been implemented yet.'
+    );
+	// [/protected]	
+}
+[/for]
+[/template]
