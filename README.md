@@ -1,4 +1,4 @@
-# UMLTOPHP Generator
+# UMLToPHP Generator
 
 A php sources class/interface generator from EMF (Eclipse Modeling Framework) UML Models.
 It has been written using the great Acceleo eclipse plugin. 
@@ -24,10 +24,10 @@ The Generator is already compiled as an executable jar file.
 
 ## Usage
 To launch the generator, go to the folder where you cloned the github repository then type:
-``
+```bash
 $ cd /repo-folder
 $ java -jar umltojar.php /path-to/model.uml /out 
-``
+```
 where `/path-to/model.uml` is the path to your dot uml model file made with some eclipse EMF compatible tool like Papyrus and `/out` is the output path where the PHP classes will be generated. 
 
 For the generator handle your UML model correctly, you should consider some rules :
@@ -36,17 +36,17 @@ For the generator handle your UML model correctly, you should consider some rule
 - Despite some special stereotypes names (see documentation when it will be written), stereotypes applied to classifiers have no meanings nor effects on the generation.
 
 Once the generation is done. You can edit the generated classes inside some markers :
-``
+```php
 // Start of user code of SomeClass.someMethod
  Place your code here
 //
-``
+```
 Edit only your classes inside theses marker and don't remove them! 
 They are used by the generator to update yours classes/interfaces according to the changes made in the model without erase your handwritten code. 
 If you change the name of yours class methods in your model or remove some of thems, don't worry, the generator will backup the lost code inside some txt file. 
 Theses behavior are made possible thanks to the Acceleo nature of project. For more information about the global behavior of the generator, please take a look at [The Acceleo Project](http://www.eclipse.org/acceleo/)
 
-### Use As an Eclipse plugin
+## Use As an Eclipse plugin
 Once Acceleo plugin installed inside eclipse, create a new Acceleo project then simply import the .mtl sources files available at `src/umltophp/main/` of this project. Please refer to Acceleo documentation for more information. 
 Note : This use case could be improved (see TODO.md)
 
