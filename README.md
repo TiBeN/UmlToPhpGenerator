@@ -26,7 +26,7 @@ The Generator is already compiled as an executable jar file.
 To launch the generator, go to the folder where you cloned the github repository then type:
 ```bash
 $ cd /repo-folder
-$ java -jar umltojar.php /path-to/model.uml /out 
+$ java -jar umltophp.jar /path-to/model.uml /out 
 ```
 where `/path-to/model.uml` is the path to your dot uml model file made with some eclipse EMF compatible tool like Papyrus and `/out` is the output path where the PHP classes will be generated. 
 
