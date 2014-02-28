@@ -10,7 +10,7 @@ It has been written using the great Acceleo eclipse plugin.
 - Generate PSR0 Compatible class name and file structure.
 - Map UML class packages as php namespaces.
 - Convert well multiplicities of classifier properties like "\*..n" to php arrays 
-- Handle UML dependencies, generalisations, associations, realisation and interface realisations by 
+- Handle UML dependencies, generalisations, associations, realisation and interface realisations
 - Handle class/interface templates using some design pattern that mimic the use of generics / templates in PHP.
 - Map primitive datatypes with PHP equivalents.
 - Can optionnaly generate PHPUnit units tests skeletons.
