@@ -39,9 +39,10 @@ fi
 
 echo "Compacting into jar file"
 cd classes/ 
-jar cfm ../umltophp.jar ../MANIFEST.MF ./ \
+jar cfm ../umltophp.jar ../MANIFEST.MF ./ 
+cd ../
 
 echo "Deleting classes folder"
-rm -rf classes 
+rm -rf ./classes 
 
 echo "Build finished"
