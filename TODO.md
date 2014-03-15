@@ -1,8 +1,6 @@
 # UMLTOPHP Generator TODO list
 
 ## About the packaging
--> Handling build and dependencies of standalone version using Maven
--> Remove eclipse jar dependancies from the git repo
 -> Improve eclipse plugin packaging
 -> Change the package path of the project.
 
