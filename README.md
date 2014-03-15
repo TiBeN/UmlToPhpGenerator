@@ -18,15 +18,22 @@ It has been written using the great Acceleo eclipse plugin.
 - Can be included inside eclipse as an Acceleo Projet.
 - All the benefits of an Acceleo generator.
 
-## Installation
-Make sure a java runtime is installed in your system. Clone this repository somewhere in your drive.
-The Generator is already compiled as an executable jar file.
+## Build (using Maven)
+Make sure a java runtime and Maven >= 3+ is installed in your system. 
+Clone this repository somewhere in your drive and launch the compilation using Maven : 
+
+```bash
+mkdir /destpath
+cd /destpath
+git clone https://github.com/TiBeN/UmlToPhpGenerator ./
+mvn clean package
+```
 
 ## Usage
 To launch the generator, go to the folder where you cloned the github repository then type:
 ```bash
 $ cd /repo-folder
-$ java -jar umltophp.jar /path-to/model.uml /out 
+$ java -jar target/uml-to-php-generator-1.0-SNAPSHOT.jar /path-to/model.uml /out 
 ```
 where `/path-to/model.uml` is the path to your dot uml model file made with some eclipse EMF compatible tool like Papyrus and `/out` is the output path where the PHP classes will be generated. 
 
@@ -47,13 +54,8 @@ If you change the name of yours class methods in your model or remove some of th
 Theses behavior are made possible thanks to the Acceleo nature of project. For more information about the global behavior of the generator, please take a look at [The Acceleo Project](http://www.eclipse.org/acceleo/)
 
 ## Use As an Eclipse plugin
-Once Acceleo plugin installed inside eclipse, create a new Acceleo project then simply import the .mtl sources files available at `src/umltophp/main/` of this project. Please refer to Acceleo documentation for more information. 
+Once Acceleo plugin installed inside eclipse, create a new Acceleo project then simply import the .mtl sources files available at `src/main/java/umltophp/main/` of this project. Please refer to Acceleo documentation for more information. 
 Note : This use case could be improved (see TODO.md)
-
-## Compilation as a standalone command line app
-A build bash script "build.sh" is available at the root of the project.
-This script is responsible of building sources and creating the final jar file.
-Note: This could be really improved using Maven. (see TODO.md) 
 
 ## Some notes about this project.
 For the sake of the design of a web Framework i started to make some diagrams for modeling the components of the framework by using Eclipse Papyrus. I read at the same time a lot of articles about design and especially on MDA/MDE methodologies. The case of this web framework was a great "pretext" to go a bit further into my discovery of the MDE design. 
