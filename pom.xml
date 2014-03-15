@@ -1,0 +1,166 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.tibennetwork</groupId>
+  <artifactId>uml-to-php-generator</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>uml-to-php-generator</name>
+  <packaging>jar</packaging>
+  <description>UML To PHP Generator</description>
+  
+  <!-- Launch this with the following command: mvn clean org.eclipse.acceleo:org.eclipse.acceleo.maven:3.5.0-SNAPSHOT:acceleo-compile verify -->
+  
+  <repositories>
+    <repository>
+      <id>Eclipse - Acceleo Snapshots</id>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-snapshots</url>
+    </repository>
+	<repository>
+      <id>Eclipse - Acceleo Release</id>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-releases</url>
+    </repository>
+  </repositories>
+  
+  <pluginRepositories>
+    <pluginRepository>
+      <id>Eclipse - Acceleo Snapshots</id>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-snapshots</url>
+    </pluginRepository>
+	<pluginRepository>
+      <id>Eclipse - Acceleo Release</id>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-releases</url>
+    </pluginRepository>
+  </pluginRepositories>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.acceleo</groupId>
+      <artifactId>org.eclipse.acceleo.maven</artifactId>
+      <version>3.5.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.acceleo</groupId>
+      <artifactId>org.eclipse.acceleo.engine</artifactId>
+      <version>3.5.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.uml2</groupId>
+      <artifactId>org.eclipse.uml2.uml</artifactId>
+      <version>4.1.1.v20130902-0826</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.uml2</groupId>
+      <artifactId>org.eclipse.uml2.types</artifactId>
+      <version>1.1.0.v20130902-0826</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.uml2</groupId>
+      <artifactId>org.eclipse.uml2.common</artifactId>
+      <version>1.8.1.v20130902-0826</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.6.4</version>
+    </dependency>
+    <dependency>
+    <groupId>org.eclipse.birt.runtime</groupId>
+        <artifactId>org.eclipse.equinox.registry</artifactId>
+            <version>3.5.301.v20130717-1549</version>
+            </dependency>
+<dependency>
+  <groupId>org.eclipse.birt.runtime</groupId>
+    <artifactId>org.eclipse.core.runtime</artifactId>
+      <version>3.9.0.v20130326-1255</version>
+      </dependency>
+<dependency>
+  <groupId>org.eclipse.birt.runtime</groupId>
+    <artifactId>org.eclipse.osgi</artifactId>
+      <version>3.9.1.v20130814-1242</version>
+      </dependency>
+ <dependency>
+  <groupId>org.eclipse.birt.runtime</groupId>
+    <artifactId>org.eclipse.equinox.preferences</artifactId>
+      <version>3.5.100.v20130422-1538</version>
+      </dependency> 
+ </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.acceleo</groupId>
+        <artifactId>org.eclipse.acceleo.maven</artifactId>
+        <version>3.5.0-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+               <goal>acceleo-compile</goal> 
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <useBinaryResources>false</useBinaryResources>
+          <usePlatformResourcePath>true</usePlatformResourcePath>
+          <acceleoProject>
+            <root>${project.basedir}</root>
+            <entries>
+              <entry>
+                <input>src/main/java</input>
+                <output>target/classes</output>
+              </entry>
+            </entries>
+          </acceleoProject>
+          <packagesToRegister>
+            <packageToRegister>org.eclipse.uml2.uml.UMLPackage</packageToRegister>
+          </packagesToRegister>
+        </configuration>
+      </plugin>
+ 
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <configuration>
+           <mainClass>umltophp.main.Main</mainClass>    
+           <arguments>
+             <argument>/var/www/kitschclip/app/related/models/Framework.uml</argument>
+             <argument>/home/tiben/test</argument>
+           </arguments>
+           <includePluginDependencies>true</includePluginDependencies> 
+        </configuration>
+      </plugin>  
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+             <phase>package</phase>
+             <goals>
+                <goal>shade</goal>
+             </goals>
+             <configuration>
+                <transformers>
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <mainClass>umltophp.main.Main</mainClass>
+                    </transformer>
+                </transformers>    
+                <filters>
+                    <filter>
+                        <artifact>*:*</artifact>
+                        <excludes>
+                            <exclude>META-INF/*.SF</exclude>
+                            <exclude>META-INF/*.DSA</exclude>
+                            <exclude>META-INF/*.RSA</exclude>
+                        </excludes>
+                    </filter>
+                </filters>          
+             </configuration>
+          </execution>
+        </executions>
+      </plugin>  
+
+    </plugins>  
+  </build>
+</project>
