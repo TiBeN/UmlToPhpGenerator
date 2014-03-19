@@ -111,8 +111,8 @@
         <configuration>
            <mainClass>umltophp.main.Main</mainClass>    
            <arguments>
-             <argument>/var/www/kitschclip/app/related/models/Framework.uml</argument>
-             <argument>/home/tiben/test</argument>
+             <argument>${umltophp.model}</argument>
+             <argument>${umltophp.out}</argument>
              <argument>/opt/eclipse/plugins/org.eclipse.uml2.uml.resources_4.1.0.v20130902-0826.jar</argument>
            </arguments>
            <includePluginDependencies>true</includePluginDependencies> 
