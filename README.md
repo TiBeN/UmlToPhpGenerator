@@ -33,9 +33,9 @@ mvn clean package
 To launch the generator, go to the folder where you cloned the github repository then type:
 ```bash
 $ cd /repo-folder
-$ java -jar target/uml-to-php-generator-1.0-SNAPSHOT.jar /path-to/model.uml /out 
+$ mvn exec:java -Dumltophp.model="/path/to/your/model/file.uml" -Dumltophp.out="/out" 
 ```
-where `/path-to/model.uml` is the path to your dot uml model file made with some eclipse EMF compatible tool like Papyrus and `/out` is the output path where the PHP classes will be generated. 
+where `/path/to/your/model/file.uml` is the path to your dot uml model file made with some eclipse EMF compatible tool like Papyrus and `/out` is the output path where the PHP classes will be generated. 
 
 For the generator handle your UML model correctly, you should consider some rules :
 - Place all your UML components inside a root named "Model" package in your UML model. (this is a temporary limitation, see TODO.md)
