@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
@@ -51,6 +52,12 @@ public class Main extends AbstractAcceleoGenerator {
      * @generated
      */
     private List<String> propertiesFiles = new ArrayList<String>();
+
+    /**
+     * Absolute Uri of the jar containing uml resources libraries
+     * "org.eclipse.uml2.uml.resources"
+     */
+     public static String orgEclipseUml2ResourcesJarAbsolutePath;
 
     /**
      * Allows the public constructor to be used. Note that a generator created
@@ -117,15 +124,16 @@ public class Main extends AbstractAcceleoGenerator {
      * 
      * @param args
      *            Arguments of the generation.
-     * @generated
+     * @generated NOT
      */
     public static void main(String[] args) {
         try {
-            if (args.length < 2) {
-                System.out.println("Arguments not valid : {model, folder}.");
+            if (args.length < 3) {
+                System.out.println("Arguments not valid : {model, folder, uml2-resource-jar-path}.");
             } else {
                 URI modelURI = URI.createFileURI(args[0]);
                 File folder = new File(args[1]);
+                orgEclipseUml2ResourcesJarAbsolutePath = args[2];              
                 
                 List<String> arguments = new ArrayList<String>();
                 
@@ -154,7 +162,7 @@ public class Main extends AbstractAcceleoGenerator {
                  * (Help -> Help Contents).
                  */
                  
-                for (int i = 2; i < args.length; i++) {
+                for (int i = 3; i < args.length; i++) {
                     generator.addPropertiesFile(args[i]);
                 }
                 
@@ -339,13 +347,18 @@ public class Main extends AbstractAcceleoGenerator {
      * 
      * @param resourceSet
      *            The resource set which registry has to be updated.
-     * @generated
+     * @generated NOT
      */
     @Override
     public void registerPackages(ResourceSet resourceSet) {
         super.registerPackages(resourceSet);
         if (!isInWorkspace(org.eclipse.uml2.uml.UMLPackage.class)) {
             resourceSet.getPackageRegistry().put(org.eclipse.uml2.uml.UMLPackage.eINSTANCE.getNsURI(), org.eclipse.uml2.uml.UMLPackage.eINSTANCE);
+            Map uriMap = resourceSet.getURIConverter().getURIMap();  
+            URI uri = URI.createURI("jar:file:" + orgEclipseUml2ResourcesJarAbsolutePath + "!/");
+            uriMap.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP), uri.appendSegment("libraries").appendSegment(""));
+            uriMap.put(URI.createURI(UMLResource.METAMODELS_PATHMAP), uri.appendSegment("metamodels").appendSegment(""));
+            uriMap.put(URI.createURI(UMLResource.PROFILES_PATHMAP), uri.appendSegment("profiles").appendSegment(""));  
         }
         
         /*

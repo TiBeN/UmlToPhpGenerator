@@ -18,12 +18,10 @@ use [aClass.getUsePath()/];
 
 /** 
  * Test cases for class [aClass.name.toUpperFirst()/]
- * 
- * @runTestsInSeparateProcesses	 
  *
  * @author TiBeN
  */ 
-class [aClass.name.toUpperFirst()/]Test extends PHPUnit_Framework_TestCase
+class [aClass.name.toUpperFirst()/]Test extends \PHPUnit_Framework_TestCase
 {
 	// [protected (aClass.name.concat('Test.attributes'))]
 	// Place additional tests attributes here.  
