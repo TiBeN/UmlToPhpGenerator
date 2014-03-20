@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.tibennetwork</groupId>
@@ -6,31 +7,27 @@
   <name>uml-to-php-generator</name>
   <packaging>jar</packaging>
   <description>UML To PHP Generator</description>
-  
   <!-- Launch this with the following command: mvn clean org.eclipse.acceleo:org.eclipse.acceleo.maven:3.5.0-SNAPSHOT:acceleo-compile verify -->
-  
   <repositories>
     <repository>
       <id>Eclipse - Acceleo Snapshots</id>
       <url>https://repo.eclipse.org/content/repositories/acceleo-snapshots</url>
     </repository>
-	<repository>
+    <repository>
       <id>Eclipse - Acceleo Release</id>
       <url>https://repo.eclipse.org/content/repositories/acceleo-releases</url>
     </repository>
   </repositories>
-  
   <pluginRepositories>
     <pluginRepository>
       <id>Eclipse - Acceleo Snapshots</id>
       <url>https://repo.eclipse.org/content/repositories/acceleo-snapshots</url>
     </pluginRepository>
-	<pluginRepository>
+    <pluginRepository>
       <id>Eclipse - Acceleo Release</id>
       <url>https://repo.eclipse.org/content/repositories/acceleo-releases</url>
     </pluginRepository>
   </pluginRepositories>
-  
   <dependencies>
     <dependency>
       <groupId>org.eclipse.acceleo</groupId>
@@ -62,16 +59,18 @@
       <artifactId>slf4j-simple</artifactId>
       <version>1.6.4</version>
     </dependency>
-      <dependency>
-      <groupId>org.eclipse.uml2.uml</groupId><artifactId>resources</artifactId><version>4.1.0-v20130902-0826</version>
+    <dependency>
+      <groupId>org.eclipse.uml2.uml</groupId>
+      <artifactId>resources</artifactId>
+      <version>4.1.0-v20130902-0826</version>
       <exclusions>
         <exclusion>
-            <groupId>org.eclipse.uml2</groupId><artifactId>uml</artifactId>            
+          <groupId>org.eclipse.uml2</groupId>
+          <artifactId>uml</artifactId>
         </exclusion>
       </exclusions>
-      </dependency>
-</dependencies>
-  
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
@@ -82,7 +81,7 @@
           <execution>
             <phase>compile</phase>
             <goals>
-               <goal>acceleo-compile</goal> 
+              <goal>acceleo-compile</goal>
             </goals>
           </execution>
         </executions>
@@ -103,53 +102,50 @@
           </packagesToRegister>
         </configuration>
       </plugin>
- 
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.2.1</version>
         <configuration>
-           <mainClass>umltophp.main.Main</mainClass>    
-           <arguments>
-             <argument>${umltophp.model}</argument>
-             <argument>${umltophp.out}</argument>
-             <argument>/opt/eclipse/plugins/org.eclipse.uml2.uml.resources_4.1.0.v20130902-0826.jar</argument>
-           </arguments>
-           <includePluginDependencies>true</includePluginDependencies> 
+          <mainClass>umltophp.main.Main</mainClass>
+          <arguments>
+            <argument>${umltophp.model}</argument>
+            <argument>${umltophp.out}</argument>
+            <argument>${settings.localRepository}/org/eclipse/uml2/uml/resources/4.1.0-v20130902-0826/resources-4.1.0-v20130902-0826.jar</argument>
+          </arguments>
+          <includePluginDependencies>true</includePluginDependencies>
         </configuration>
-      </plugin>  
-      
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>2.2</version>
         <executions>
           <execution>
-             <phase>package</phase>
-             <goals>
-                <goal>shade</goal>
-             </goals>
-             <configuration>
-                <transformers>
-                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                        <mainClass>umltophp.main.Main</mainClass>
-                    </transformer>
-                </transformers>    
-                <filters>
-                    <filter>
-                        <artifact>*:*</artifact>
-                        <excludes>
-                            <exclude>META-INF/*.SF</exclude>
-                            <exclude>META-INF/*.DSA</exclude>
-                            <exclude>META-INF/*.RSA</exclude>
-                        </excludes>
-                    </filter>
-                </filters>          
-             </configuration>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>umltophp.main.Main</mainClass>
+                </transformer>
+              </transformers>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
           </execution>
         </executions>
-      </plugin>  
-
-    </plugins>  
+      </plugin>
+    </plugins>
   </build>
 </project>
