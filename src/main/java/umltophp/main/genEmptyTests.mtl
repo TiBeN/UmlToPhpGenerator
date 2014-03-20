@@ -20,28 +20,22 @@ use [aClass.getUsePath()/];
  * Test cases for class [aClass.name.toUpperFirst()/]
  * 
  * @runTestsInSeparateProcesses
- * @author TiBeN
+ * @author [getProperty('vendor')/]
  */ 
 class [aClass.name.toUpperFirst()/]Test extends PHPUnit_Framework_TestCase  {
 
 	public function setUp() 
 	{		
-		/* Launch the Framework Bootstrap Initialisation */
-		$boot = new Bootstrap();
-		$boot->init(dirname(__FILE__).'/../fixture/app_for_test', Bootstrap::RUNTIME_MODE_HTTP);
-
 		// [protected (aClass.name.concat('Test.setUp'))]
 		// Place additional setUp code here.  
 		// [/protected]			
-
 	}	
 
-	public function tearDown() {
-
+	public function tearDown() 
+    {
 		// [protected (aClass.name.concat('Test.tearDown'))]
 		// Place additional tearDown code here.  
 		// [/protected]			
-		
 	}
 
 	// [protected (aClass.name.concat('Test'))]	  

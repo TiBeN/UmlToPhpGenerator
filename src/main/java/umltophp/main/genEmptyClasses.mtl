@@ -15,8 +15,8 @@ namespace [aClass.getNamespacePath()/];
 /** 
  * [aClass.ownedComment._body.substituteAll('\n', '\n     * ')  /]
  * 
- * @package [aClass._package.name /]
- * @author TiBeN
+ * @package [aClass._package.name/]
+ * @author [getProperty('vendor')/]
  */ 
 class [aClass.name.toUpperFirst()/][if (not aClass.getGenerals()->filter(Class)->isEmpty())] extends [for (aClass : Class | aClass.getGenerals()->filter(Class)) separator(', ')][aClass.name/][/for][/if][if (not aClass.getImplementedInterfaces()->filter(Interface)->isEmpty())] implements [for (aInterface : Interface | aClass.getImplementedInterfaces()) separator(', ')][aInterface.name/][/for][/if]
 {
