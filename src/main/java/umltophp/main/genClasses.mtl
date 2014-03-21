@@ -2,9 +2,9 @@
 [module genClasses('http://www.eclipse.org/uml2/4.0.0/UML')]
 [import umltophp::main::commons /]
 
-[ comment 
-	Generate PHP class from model Class
-	Classes must be in a Package otherwise they will be ignored
+[ comment
+    Generate PHP class from model Class
+    Classes must be in a Package otherwise they will be ignored
  /]
 [template public genPhpClassFile(aClass : Class)]
 [file (aClass.getFilePath(), false, 'UTF-8')]
@@ -12,78 +12,77 @@
 
 namespace [aClass.getNamespacePath()/];
 
-[for (aDependency: Dependency | aClass.clientDependency) 
-	after(lineSeparator())
-	? (aDependency.target.oclAsSet()->asSequence()->first().oclAsType(Classifier).getNamespacePath() <> aClass.getNamespacePath())	
+[for (aDependency: Dependency | aClass.clientDependency)
+    after(lineSeparator())
+    ? (aDependency.target.oclAsSet()->asSequence()->first().oclAsType(Classifier).getNamespacePath() <> aClass.getNamespacePath())
 ]
 use [aDependency.target.oclAsType(Classifier).getUsePath()/];
 [/for]
-/** 
+/**
  * [aClass.ownedComment._body.substituteAll('\n', '\n * ')/]
- * 
+ *
  * @package [aClass._package.name/]
  * @author [getProperty('vendor')/]
- */ 
+ */
 class [aClass.name.toUpperFirst()/][if (not aClass.getGenerals()->filter(Class)->isEmpty())] extends [for (aClass : Class | aClass.getGenerals()->filter(Class)) separator(', ')][aClass.name/][/for][/if][if (not aClass.getImplementedInterfaces()->filter(Interface)->isEmpty())] implements [for (aInterface : Interface | aClass.getImplementedInterfaces()) separator(', ')][aInterface.name/][/for][/if]
 {
-	[if (aClass.hasTemplateSignature())]	
-	[for (aParameter: TemplateParameter | aClass.getTemplateParameters()) separator('\n') after('\n')]
-	/**
-	 * Type of the element [aParameter.ownedElement->selectByType(Class).name/]
+    [if (aClass.hasTemplateSignature())]
+    [for (aParameter: TemplateParameter | aClass.getTemplateParameters()) separator('\n') after('\n')]
+    /**
+     * Type of the element [aParameter.ownedElement->selectByType(Class).name/]
      * @var String
      */
-	protected $[aParameter.ownedElement->selectByType(Class).name/]Type;
-	[/for]
-	[/if]
-	[for (aProperty: Property | aClass.attribute) separator('\n') after('\n')]
-	[aProperty.genPhpProperty()/]
-	[/for]
+    protected $[aParameter.ownedElement->selectByType(Class).name/]Type;
+    [/for]
+    [/if]
+    [for (aProperty: Property | aClass.attribute) separator('\n') after('\n')]
+    [aProperty.genPhpProperty()/]
+    [/for]
     [for (aInterface : Interface | aClass.getImplementedInterfaces()->filter(Interface)) separator('\n') after('\n')]
     [for (aProperty: Property | aInterface.getAllAttributes()) separator('\n') after('\n')]
     [aProperty.genPhpProperty()/]
     [/for]
     [/for]
-	[if aClass.getGenerals()->isEmpty()]
-	public function __construct([if (aClass.hasTemplateSignature())][for (aParameter: TemplateParameter | aClass.getTemplateParameters()) separator(', ')]$[aParameter.ownedElement->selectByType(Class).name/]Type = NULL[/for][/if])
-	{
-		[if (aClass.hasTemplateSignature())]
-		[for (aParameter: TemplateParameter | aClass.getTemplateParameters()) after('\n')]
-		$this->[aParameter.ownedElement->selectByType(Class).name/]Type = $[aParameter.ownedElement->selectByType(Class).name/]Type;
-		[/for]
-		[/if]
-		// [protected (aClass.name.concat('.'.concat('constructor')))]
-		// [/protected]
-	}
+    [if aClass.getGenerals()->isEmpty()]
+    public function __construct([if (aClass.hasTemplateSignature())][for (aParameter: TemplateParameter | aClass.getTemplateParameters()) separator(', ')]$[aParameter.ownedElement->selectByType(Class).name/]Type = NULL[/for][/if])
+    {
+        [if (aClass.hasTemplateSignature())]
+        [for (aParameter: TemplateParameter | aClass.getTemplateParameters()) after('\n')]
+        $this->[aParameter.ownedElement->selectByType(Class).name/]Type = $[aParameter.ownedElement->selectByType(Class).name/]Type;
+        [/for]
+        [/if]
+        // [protected (aClass.name.concat('.'.concat('constructor')))]
+        // [/protected]
+    }
 
-	public function __destruct()
-	{		
-		// [protected (aClass.name.concat('.'.concat('destructor')))]
-		// [/protected]			
-	}
-
-	[else]
-	// [protected (aClass.name.concat('.'.concat('surchargedConstructorsDestructors')))]
-	// Surcharge Constructors and Destructors here
-	// [/protected]	
-	[/if]
-	[if (aClass.hasTemplateSignature())]
+    public function __destruct()
+    {
+        // [protected (aClass.name.concat('.'.concat('destructor')))]
+        // [/protected]
+    }
+    [else]
+    // [protected (aClass.name.concat('.'.concat('surchargedConstructorsDestructors')))]
+    // Surcharge Constructors and Destructors here
+    // [/protected]
+    [/if]
+    [if (aClass.hasTemplateSignature())]
     [for (aParameter: TemplateParameter | aClass.getTemplateParameters()) separator('\n')]
     /**
      * [aParameter.ownedElement->selectByType(Class).name/] type getter
      * @var String
      */
-    public function get[aParameter.ownedElement->selectByType(Class).name/]Type() 
+    public function get[aParameter.ownedElement->selectByType(Class).name/]Type()
     {
-        return $this->[aParameter.ownedElement->selectByType(Class).name/]Type; 
+        return $this->[aParameter.ownedElement->selectByType(Class).name/]Type;
     }
     [/for]
 
-	/**
+    /**
      * Emulate Templates (generics) in PHP. Check if the type of the object match
      * type specified in constructor.
-     * If no type (null) if specified in the constructor, then type is not checked. 
-	 */
-	private static function typeHint($type, $variable) {
+     * If no type (null) if specified in the constructor, then type is not checked.
+     */
+    private static function typeHint($type, $variable) {
 
         if($type == NULL || $variable == NULL) {
             return;
@@ -98,48 +97,47 @@ class [aClass.name.toUpperFirst()/][if (not aClass.getGenerals()->filter(Class)-
             $hint = $varType == $type;
         }
 
-		if(!$hint) {
-			throw new \InvalidArgumentException(sprintf('expects parameter to be %s, %s given', $type, $varType));
-		}
-	}
-	[/if]
+        if(!$hint) {
+            throw new \InvalidArgumentException(sprintf('expects parameter to be %s, %s given', $type, $varType));
+        }
+    }
+    [/if]
 
-	[for (aProperty: Property | aClass.attribute) separator('\n') after('\n') ? (not aProperty.isReadOnly) ]
-	[aProperty.genPhpPropertyGetterDeclaration()/]
-	[aProperty.genPhpPropertyGetterContent()/]
+    [for (aProperty: Property | aClass.attribute) separator('\n') after('\n') ? (not aProperty.isReadOnly) ]
+    [aProperty.genPhpPropertyGetterDeclaration()/]
+    [aProperty.genPhpPropertyGetterContent()/]
 
-	[aProperty.genPhpPropertySetterDeclaration()/]
-	[aProperty.genPhpPropertySetterContent()/]
-	[/for]
-	[for (aOperation: Operation | aClass.getOperations()) separator('\n') after('\n')]
-	[aOperation.genPhpMethodDeclaration()/]
-	[aOperation.genPhpMethodContent()/]
-	[/for]
-	[for (aInterface : Interface | aClass.getImplementedInterfaces()->filter(Interface)) separator('\n') after('\n')]
-	/* [aInterface.name.toUpperFirst()/] Realization */
+    [aProperty.genPhpPropertySetterDeclaration()/]
+    [aProperty.genPhpPropertySetterContent()/]
+    [/for]
+    [for (aOperation: Operation | aClass.getOperations()) separator('\n') ]
+    [aOperation.genPhpMethodDeclaration()/]
+    [aOperation.genPhpMethodContent()/]
+    [/for]
+    [for (aInterface : Interface | aClass.getImplementedInterfaces()->filter(Interface)) separator('\n') after('\n')]
+    /* [aInterface.name.toUpperFirst()/] Realization */
 
-	[for (aProperty: Property | aInterface.getAllAttributes()) separator('\n') after('\n')]
-	[aProperty.genPhpPropertyGetterDeclaration()/]
-	[aProperty.genPhpPropertyGetterContent()/]
+    [for (aProperty: Property | aInterface.getAllAttributes()) separator('\n') after('\n')]
+    [aProperty.genPhpPropertyGetterDeclaration()/]
+    [aProperty.genPhpPropertyGetterContent()/]
 
-	[aProperty.genPhpPropertySetterDeclaration()/]
-	[aProperty.genPhpPropertySetterContent()/]
-	[/for]
-	[for (aOperation: Operation | aInterface.getAllOperations()) separator('\n') after('\n')]
-	[aOperation.genPhpMethodDeclaration()/]
-	[aOperation.genPhpMethodContent()/]
-	[/for]	
-	[/for]
+    [aProperty.genPhpPropertySetterDeclaration()/]
+    [aProperty.genPhpPropertySetterContent()/]
+    [/for]
+    [for (aOperation: Operation | aInterface.getAllOperations()) separator('\n') after('\n')]
+    [aOperation.genPhpMethodDeclaration()/]
+    [aOperation.genPhpMethodContent()/]
+    [/for]
+    [/for]
     [if (not aClass.getGenerals()->filter(Class)->isEmpty())]
     // [protected (aClass.name.concat('.'.concat('surchargedMethods')))]
     // Surcharge Methods here
-    // [/protected]     
+    // [/protected]
     [/if]
-    
+
     // [protected (aClass.name.concat('.'.concat('implementationSpecificMethods')))]
     // Place your implementation specific methods here
-    // [/protected]     
-   
+    // [/protected]
 }
 [/file]
 [/template]
