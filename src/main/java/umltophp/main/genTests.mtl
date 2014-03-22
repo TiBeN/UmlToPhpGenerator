@@ -16,6 +16,10 @@ namespace [aClass.getTestNamespacePath()/];
 
 use [aClass.getUsePath()/];
 
+// [protected (aClass.name.concat('Test.useStatements'))]
+// Place your use statements here.  
+// [/protected]			
+
 /** 
  * Test cases for class [aClass.name.toUpperFirst()/]
  *
