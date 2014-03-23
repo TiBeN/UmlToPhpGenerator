@@ -24,7 +24,7 @@ use [aDependency.target.oclAsType(Classifier).getUsePath()/];
  * @package [aClass._package.name/]
  * @author [getProperty('vendor')/]
  */
-class [aClass.name.toUpperFirst()/][if (not aClass.getGenerals()->filter(Class)->isEmpty())] extends [for (aClass : Class | aClass.getGenerals()->filter(Class)) separator(', ')][aClass.name/][/for][/if][if (not aClass.getImplementedInterfaces()->filter(Interface)->isEmpty())] implements [for (aInterface : Interface | aClass.getImplementedInterfaces()) separator(', ')][aInterface.name/][/for][/if]
+class [aClass.name.toUpperFirst()/][if (not aClass.getGenerals()->filter(Class)->isEmpty())] extends [for (aClass : Class | aClass.getGenerals()->filter(Class)) separator(', ')][aClass.name/][/for][/if][if (not aClass.getImplementedInterfaces()->filter(Interface)->isEmpty())] implements [for (aInterface : Interface | aClass.getImplementedInterfaces()) separator(', ')][if(aInterface.isInNativePhpLibrary())]\[/if][aInterface.name/][/for][/if]
 {
     [if (aClass.hasTemplateSignature())]
     [for (aParameter: TemplateParameter | aClass.getTemplateParameters()) separator('\n') after('\n')]
@@ -38,13 +38,13 @@ class [aClass.name.toUpperFirst()/][if (not aClass.getGenerals()->filter(Class)-
     [for (aProperty: Property | aClass.attribute) separator('\n') after('\n')]
     [aProperty.genPhpProperty()/]
     [/for]
-    [for (aInterface : Interface | aClass.getImplementedInterfaces()->filter(Interface)) separator('\n') after('\n')]
+    [for (aInterface : Interface | aClass.getImplementedInterfaces()->filter(Interface))]
     [for (aProperty: Property | aInterface.getAllAttributes()) separator('\n') after('\n')]
     [aProperty.genPhpProperty()/]
     [/for]
     [/for]
     [if aClass.getGenerals()->isEmpty()]
-    public function __construct([if (aClass.hasTemplateSignature())][for (aParameter: TemplateParameter | aClass.getTemplateParameters()) separator(', ')]$[aParameter.ownedElement->selectByType(Class).name/]Type = NULL[/for][/if])
+    public function __construct([if (aClass.hasTemplateSignature())][for (aParameter: TemplateParameter | aClass.getTemplateParameters()) separator(', ')]$[aParameter.ownedElement->selectByType(Class).name/]Type = null[/for][/if])
     {
         [if (aClass.hasTemplateSignature())]
         [for (aParameter: TemplateParameter | aClass.getTemplateParameters()) after('\n')]
@@ -66,6 +66,7 @@ class [aClass.name.toUpperFirst()/][if (not aClass.getGenerals()->filter(Class)-
     // [/protected]
     [/if]
     [if (aClass.hasTemplateSignature())]
+    
     [for (aParameter: TemplateParameter | aClass.getTemplateParameters()) separator('\n')]
     /**
      * [aParameter.ownedElement->selectByType(Class).name/] type getter
@@ -81,50 +82,54 @@ class [aClass.name.toUpperFirst()/][if (not aClass.getGenerals()->filter(Class)-
      * Emulate Templates (generics) in PHP. Check if the type of the object match
      * type specified in constructor.
      * If no type (null) if specified in the constructor, then type is not checked.
+     *
+     * @param string $type
+     * @param <$type> $variable
+     * @return boolean 
      */
-    private static function typeHint($type, $variable) {
-
-        if($type == NULL || $variable == NULL) {
+    private static function typeHint($type, $variable)
+    {
+        if ($type == null || $variable == null) {
             return;
         }
 
-        if(is_object($variable)) {
+        if (is_object($variable)) {
             $hint = is_a($variable, $type);
             $varType = get_class($variable);
-        }
-        else {
+        } else {
             $varType = gettype($variable);
             $hint = $varType == $type;
         }
 
-        if(!$hint) {
-            throw new \InvalidArgumentException(sprintf('expects parameter to be %s, %s given', $type, $varType));
+        if (!$hint) {
+            throw new \InvalidArgumentException(
+                sprintf('expects parameter to be %s, %s given', $type, $varType)
+            );
         }
     }
     [/if]
-
-    [for (aProperty: Property | aClass.attribute) separator('\n') after('\n') ? (not aProperty.isReadOnly) ]
+    [for (aProperty: Property | aClass.attribute) before('\n') separator('\n') ? (not aProperty.isReadOnly) ]
     [aProperty.genPhpPropertyGetterDeclaration()/]
     [aProperty.genPhpPropertyGetterContent()/]
 
     [aProperty.genPhpPropertySetterDeclaration()/]
     [aProperty.genPhpPropertySetterContent()/]
     [/for]
-    [for (aOperation: Operation | aClass.getOperations()) separator('\n') ]
+    [for (aOperation: Operation | aClass.getOperations()) before('\n') separator('\n') ]
     [aOperation.genPhpMethodDeclaration()/]
     [aOperation.genPhpMethodContent()/]
     [/for]
-    [for (aInterface : Interface | aClass.getImplementedInterfaces()->filter(Interface)) separator('\n') after('\n')]
-    /* [aInterface.name.toUpperFirst()/] Realization */
+    [for (aInterface : Interface | aClass.getImplementedInterfaces()->filter(Interface)) before('\n') separator('\n')]
+    // [aInterface.name.toUpperFirst()/] Realization
 
-    [for (aProperty: Property | aInterface.getAllAttributes()) separator('\n') after('\n')]
+    [for (aProperty: Property | aInterface.getAllAttributes()) separator('\n')]
     [aProperty.genPhpPropertyGetterDeclaration()/]
     [aProperty.genPhpPropertyGetterContent()/]
 
     [aProperty.genPhpPropertySetterDeclaration()/]
     [aProperty.genPhpPropertySetterContent()/]
     [/for]
-    [for (aOperation: Operation | aInterface.getAllOperations()) separator('\n') after('\n')]
+    [for (aOperation: Operation | aInterface.getAllOperations()) separator('\n')]
     [aOperation.genPhpMethodDeclaration()/]
     [aOperation.genPhpMethodContent()/]
     [/for]
