@@ -26,7 +26,10 @@ use [aClass.getUsePath()/];
 
 /**
  * Test cases for class [aClass.name.toUpperFirst()/]
- *
+ * 
+ * [protected (aClass.name.concat('Test.test').concat('Annotations'))]
+ * PHPUnit user annotations can be placed here
+ * [/protected]
  * @author [getProperty('vendor')/]
  */
 class [aClass.name.toUpperFirst()/]Test extends \PHPUnit_Framework_TestCase
@@ -69,7 +72,7 @@ class [aClass.name.toUpperFirst()/]Test extends \PHPUnit_Framework_TestCase
  * Test[if (o.isStatic = true)] static[/if] method [o.name/] from class [o.class.name /]
  *
  * [protected (aClass.name.concat('Test.test'.concat(o.name).concat('Annotations')))]
- * PHPUnit users annotations can be placed here
+ * PHPUnit user annotations can be placed here
  * [/protected]
  */
 public function test[o.name.toUpperFirst()/]()
