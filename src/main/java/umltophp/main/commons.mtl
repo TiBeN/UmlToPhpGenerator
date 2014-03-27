@@ -59,7 +59,6 @@
     and not (aParameter.upper = *)
 /]
 
-
 [ comment
     Define wether the class has templates signature
 /]
@@ -68,8 +67,100 @@
     or not aClass.getAllImplementedInterfaces()->forAll(it : Interface | it.ownedTemplateSignature->isEmpty())
 /]
 
+[ comment 
+    Return Set of class that must be imported into a Class
+    It include Dependencies, Generalizations, 
+    Property type Classifiers and Operations Parameters Classifiers types
+/]
+[query public getClassToBeImported(aClass : Classifier) : Set(Classifier) = 
+    Sequence{}
+        ->addAll(
+            if not aClass.attribute->isEmpty()
+            then
+                aClass.attribute
+                    ->reject(type.isTemplateParameter()) 
+                    .type
+                    ->filter(Classifier)
+                    ->select(c : Classifier | c.oclIsKindOf(Class) or c.oclIsKindOf(Interface))
+                    ->select(c : Classifier | c.getNamespacePath() <> aClass.getNamespacePath())
+            else
+                Sequence{}
+            endif
+        )
+        ->addAll(
+            if not aClass.getOperations().ownedParameter->isEmpty()
+            then
+                aClass.getOperations().ownedParameter
+                    ->reject(self.isTemplateParameter()).type
+                    ->filter(Classifier)
+                    ->select(c : Classifier | c.oclIsKindOf(Class) or c.oclIsKindOf(Interface))
+                    ->select(c : Classifier | c.getNamespacePath() <> aClass.getNamespacePath())
+            else
+                Sequence{}
+            endif
+        )
+        ->addAll(
+            if not aClass.clientDependency.target.oclAsSet()->asSequence()->isEmpty()
+            then 
+                aClass.clientDependency.target.oclAsSet()
+                    ->asSequence()
+                    ->filter(Classifier)
+                    ->select(c : Classifier | c.getNamespacePath() <> aClass.getNamespacePath())
+            else
+                Sequence{}
+            endif    
+        )
+        ->addAll(
+            if not aClass.getGenerals()->filter(Classifier)->isEmpty()
+            then
+                aClass.getGenerals()
+                    ->filter(Classifier)
+                    ->select(c : Classifier | c.getNamespacePath() <> aClass.getNamespacePath())
+            else
+                Sequence{}
+            endif
+        )
+        ->addAll(
+            if aClass.oclIsKindOf(Class) and 
+            not aClass
+                .oclAsType(Class)
+                .getImplementedInterfaces()
+                ->filter(Interface)
+                ->isEmpty()
+            then
+                Sequence{}
+                    ->addAll(
+                        if not aClass
+                            .oclAsType(Class)
+                            .getImplementedInterfaces()
+                            ->filter(Interface)
+                            .getAllOperations()
+                            .ownedParameter
+                            ->isEmpty()
+                        then
+                            aClass
+                                .oclAsType(Class)
+                                .getImplementedInterfaces()
+                                ->filter(Interface)
+                                .getAllOperations()
+                                .ownedParameter
+                                    ->reject(self.isTemplateParameter()).type
+                                    ->filter(Classifier)
+                                    ->select(c : Classifier | c.oclIsKindOf(Class) or c.oclIsKindOf(Interface))
+                                    ->select(c : Classifier | c.getNamespacePath() <> aClass.getNamespacePath())
+                        else
+                            Sequence{}
+                        endif
+                    )
+            else
+                Sequence{}
+            endif   
+        )
+        ->asSet()
+/]
+
 [ comment
-    Return Set of template parameters of a class and its generals/implemented
+    Return Sequence of template parameters of a class and its generals/implemented
     interfaces
 /]
 [query public getTemplateParameters(aClass : Class) : Sequence(TemplateParameter) =

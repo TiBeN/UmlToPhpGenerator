@@ -11,7 +11,10 @@
 <?php
 
 namespace [aInterface.getNamespacePath()/];
- 
+
+[for (aClassifier: Classifier | aInterface.getClassToBeImported()) after(lineSeparator())]
+use [aClassifier.getUsePath()/];
+[/for]
 /**
  * [aInterface.ownedComment._body.substituteAll('\n', '\n * ')  /] 
  * @package [aInterface._package.name/]
