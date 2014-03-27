@@ -12,11 +12,8 @@
 
 namespace [aClass.getNamespacePath()/];
 
-[for (aDependency: Dependency | aClass.clientDependency)
-    after(lineSeparator())
-    ? (aDependency.target.oclAsSet()->asSequence()->first().oclAsType(Classifier).getNamespacePath() <> aClass.getNamespacePath())
-]
-use [aDependency.target.oclAsType(Classifier).getUsePath()/];
+[for (aClassifier: Classifier | aClass.getClassToBeImported()) after(lineSeparator())]
+use [aClassifier.getUsePath()/];
 [/for]
 /**
  * [aClass.ownedComment._body.substituteAll('\n', '\n * ')/]
