@@ -156,6 +156,41 @@
                 Sequence{}
             endif   
         )
+        ->addAll(
+            if aClass.oclIsKindOf(Class) and 
+            not aClass
+                .oclAsType(Class)
+                .getImplementedInterfaces()
+                ->filter(Interface)
+                ->isEmpty()
+            then
+                Sequence{}
+                    ->addAll(
+                        if not aClass
+                            .oclAsType(Class)
+                            .getImplementedInterfaces()
+                            ->filter(Interface)
+                            .attribute
+                            ->isEmpty()
+                        then
+                            aClass
+                                .oclAsType(Class)
+                                .getImplementedInterfaces()
+                                ->filter(Interface)
+                                .attribute
+                                    ->reject(type.isTemplateParameter()) 
+                                    .type
+                                    ->filter(Classifier)
+                                    ->select(c : Classifier | c.oclIsKindOf(Class) or c.oclIsKindOf(Interface))
+                                    ->select(c : Classifier | c.getNamespacePath() <> aClass.getNamespacePath())
+                        else
+                            Sequence{}
+                        endif
+                    )
+            else
+                Sequence{}
+            endif   
+        )
         ->asSet()
 /]
 
