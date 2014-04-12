@@ -20,7 +20,7 @@ namespace [aClass.getTestNamespacePath()/];
 
 use [aClass.getUsePath()/];
 
-// [protected (aClass.name.concat('Test.useStatements'))]
+// [protected (aClass.name.concat('.useStatements'))]
 // Place your use statements here.
 // [/protected]
 
