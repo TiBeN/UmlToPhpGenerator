@@ -30,6 +30,7 @@ use [aClass.getUsePath()/];
  * [protected (aClass.name.concat('Test.test').concat('Annotations'))]
  * PHPUnit user annotations can be placed here
  * [/protected]
+ *
  * @author [getProperty('vendor')/]
  */
 class [aClass.name.toUpperFirst()/]Test extends \PHPUnit_Framework_TestCase
