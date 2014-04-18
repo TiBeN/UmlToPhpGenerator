@@ -136,6 +136,7 @@ class [aClass.name.toUpperFirst()/][if (not aClass.getGenerals()->filter(Class)-
     [/for]
     [/for]
     [if (not aClass.getGenerals()->filter(Class)->isEmpty())]
+
     // [protected (aClass.name.concat('.'.concat('surchargedMethods')))]
     // Surcharge Methods here
     // [/protected]
