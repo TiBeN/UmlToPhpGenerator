@@ -25,7 +25,7 @@ use [aClassifier.getUsePath()/];
  * @package [aClass._package.name/]
  * @author [getProperty('vendor')/]
  */
-class [aClass.name.toUpperFirst()/][if (not aClass.getGenerals()->filter(Class)->isEmpty())] extends [for (aClass : Class | aClass.getGenerals()->filter(Class)) separator(', ')][aClass.name/][/for][/if][if (not aClass.getImplementedInterfaces()->filter(Interface)->isEmpty())] implements [for (aInterface : Interface | aClass.getImplementedInterfaces()) separator(', ')][if(aInterface.isInNativePhpLibrary())]\[/if][aInterface.name/][/for][/if]
+[if (aClass.isAbstract)]abstract [/if]class [aClass.name.toUpperFirst()/][if (not aClass.getGenerals()->filter(Class)->isEmpty())] extends [for (aClass : Class | aClass.getGenerals()->filter(Class)) separator(', ')][aClass.name/][/for][/if][if (not aClass.getImplementedInterfaces()->filter(Interface)->isEmpty())] implements [for (aInterface : Interface | aClass.getImplementedInterfaces()) separator(', ')][if(aInterface.isInNativePhpLibrary())]\[/if][aInterface.name/][/for][/if]
 {
     [if (aClass.hasTemplateSignature())]
     [for (aParameter: TemplateParameter | aClass.getTemplateParameters()) separator('\n') after('\n')]
