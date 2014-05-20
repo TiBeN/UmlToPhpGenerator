@@ -18,7 +18,7 @@ use [aClassifier.getUsePath()/];
 /**
  * [aInterface.ownedComment._body.substituteAll('\n', '\n * ')  /] 
  *
- * @package [aInterface._package.name/]
+ * @package [aInterface.getNamespacePath()/]
  * @author [getProperty('vendor')/]
  */ 
 interface [aInterface.name.toUpperFirst()/][if (not aInterface.getGenerals()->isEmpty())] extends [for (aInterface : Interface | aInterface.getGenerals()->filter(Interface)) separator(', ')][if(aInterface.isInNativePhpLibrary())]\[/if][aInterface.name/][/for][/if]

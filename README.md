@@ -6,7 +6,6 @@ It has been written using the great Acceleo eclipse plugin.
 ## Features
 - Generate classes and interfaces skeletons from any EMF UML Model (made with Papyrus for example).
 - Make sure the handwritten code inside generated classes methods is not erased after each generation (thanks to Acceleo engine).
-- Handle PHP namespaces with model packages.
 - Generate PSR0 Compatible class name and file structure.
 - Map UML class packages as php namespaces.
 - Convert well multiplicities of classifier properties like "\*..n" to php arrays 
