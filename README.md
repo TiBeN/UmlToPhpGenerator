@@ -57,7 +57,7 @@ Once Acceleo plugin installed inside eclipse, create a new Acceleo project then 
 Note : This use case could be improved (see TODO.md)
 
 ## Some notes about this project.
-For the sake of the design of a web Framework i started to make some diagrams for modeling the components of the framework by using Eclipse Papyrus. I read at the same time a lot of articles about design and especially on MDA/MDE methodologies. The case of this web framework was a great "pretext" to go a bit further into my discovery of the MDE design. 
+For the sake of the design of a web Framework i started to make some diagrams for modeling the components of the framework by using Eclipse Papyrus. I read at the same time a lot of articles about software design and especially on MDA/MDE methodologies. The case of this web framework was a great "pretext" to go a bit further into my discovery of the MDE design. 
 
 So I've started to integrate the auto generation ("model to text") of class skeletons of this project into my workflow. For this purpose the eclipse EMF platform hosts a very good plugin named "Acceleo". The aim is to orchestrate the generation of formated text file (code, documentation, sql statements and so on..) from any ecore compatible models. The generation is done using templates written in "MOF2Text" language wich is an OMG language specification. 
 
