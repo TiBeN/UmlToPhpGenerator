@@ -9,7 +9,7 @@
     Classes without operations are considered Object values classes and will be ignored.
  /]
 [template public genPhpClassTestFile(aClass : Class)
-    ? (aClass.ownedOperation->notEmpty()
+    ? (aClass.ownedOperation->reject(o: Operation | o.name = aClass.name)->notEmpty()
         or aClass.clientDependency->filter(Realization).supplier->filter(Interface).ownedOperation->notEmpty()
     )
 ]
@@ -69,7 +69,7 @@ class [aClass.name.toUpperFirst()/]Test extends \PHPUnit_Framework_TestCase
     Generate PHP Test Methods
  /]
 [template private genPhpTestMethods(aClass: Class) post(trim())]
-[for (o: Operation | aClass.getOperations()) separator('\n')]
+[for (o: Operation | aClass.getOperations()->reject(o: Operation | o.name = aClass.name)) separator('\n')]
 /**
  * Test[if (o.isStatic = true)] static[/if] method [o.name/] from class [o.class.name /]
  *

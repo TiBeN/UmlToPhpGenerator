@@ -60,6 +60,22 @@
 /]
 
 [ comment
+    Determine whether a class contain constructor method or not
+/]
+[query public hasConstructorMethod(aClass : Class) : Boolean =
+    aClass.getOperations()->reject(o : Operation | o.name <> aClass.name)->notEmpty()
+/]
+
+[ comment 
+    Return the constructor method. Since Php can only contain One __constructor method,
+    the first method where the name match the class name will be used has constructor.
+    The others will be simply ignored. This should be improved (if possible) later.
+/]
+[query public getConstructorMethod(aClass : Class) : Operation =
+    aClass.getOperations()->reject(o : Operation | o.name <> aClass.name)->asSequence()->first() 
+/]
+
+[ comment
     Define wether the class has templates signature
 /]
 [query public hasTemplateSignature(aClass : Class) : Boolean =
@@ -401,6 +417,13 @@ const [aProperty.genName().toUpperCase()/][if(pDefaultValue <> '')] [pDefaultVal
 }
 [/template]
 
+[ comment
+    Generate constructor declaration templates types parameters
+/]
+[template public genConstructorDeclarationTemplateTypeParameters(aClass : Class)]
+[for (aParameter: TemplateParameter | aClass.getTemplateParameters()) separator(', ')]$[aParameter.ownedElement->selectByType(Class).name/]Type = null[/for]
+[/template]
+
 [ comment Generate php method declaration /]
 [template public genPhpMethodDeclaration(aOperation : Operation)]
 /**
@@ -417,10 +440,19 @@ const [aProperty.genName().toUpperCase()/][if(pDefaultValue <> '')] [pDefaultVal
  * @return [op.genPhpType()/] $[op.name/]
 [/for]
  */
-[aOperation.visibility /] [if (aOperation.isStatic = true)]static [/if]function [aOperation.name/]([for (op: Parameter | aOperation.ownedParameter) separator(', ') ? (op.direction.toString() = 'in')][if(not (op.genPhpType().isPhpScalar())) and (not op.isTemplateParameter())][op.genPhpType()/] [/if]$[op.name/][if(op.lower = 0)] = NULL[/if][/for])
+[aOperation.visibility /] [if (aOperation.isStatic = true)]static [/if]function [aOperation.name/]([aOperation.genPhpMethodDeclarationParameters()/])
 [/template]
 
-[ comment Generate Php method content /]
+[ comment
+    Generate Php method declaration parameters list
+/]
+[template public genPhpMethodDeclarationParameters(aOperation : Operation) post(trim())]
+[for (op: Parameter | aOperation.ownedParameter) separator(', ') ? (op.direction.toString() = 'in')][if(not (op.genPhpType().isPhpScalar())) and (not op.isTemplateParameter())][op.genPhpType()/] [/if]$[op.name/][if(op.lower = 0)] = NULL[/if][/for]
+[/template]
+
+[ comment 
+    Generate Php method content 
+/]
 [template public genPhpMethodContent(aOperation : Operation)]
 {
     [for (op: Parameter | aOperation.ownedParameter) ? (

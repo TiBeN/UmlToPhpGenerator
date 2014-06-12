@@ -23,8 +23,8 @@
 		[/if]
 	[else]
 		[aClass.genPhpEmptyClassFile() /]
-		[if (getProperty('generate-tests') = '1')]	
-			[aClass.genPhpEmptyClassTestFile() /]	
+		[if (getProperty('generate-tests') = '1')]
+			[aClass.genPhpEmptyClassTestFile() /]
 		[/if]
 	[/if]
 		

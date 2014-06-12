@@ -44,8 +44,8 @@ use [aClassifier.getUsePath()/];
     [aProperty.genPhpProperty()/]
     [/for]
     [/for]
-    [if aClass.getGenerals()->isEmpty()]
-    public function __construct([if (aClass.hasTemplateSignature())][for (aParameter: TemplateParameter | aClass.getTemplateParameters()) separator(', ')]$[aParameter.ownedElement->selectByType(Class).name/]Type = null[/for][/if])
+    [if (aClass.getGenerals()->isEmpty() and (aClass.hasTemplateSignature() or aClass.hasConstructorMethod()))]
+    public function __construct([if (aClass.hasTemplateSignature())][aClass.genConstructorDeclarationTemplateTypeParameters()/][/if][if (aClass.hasConstructorMethod() and aClass.getConstructorMethod().ownedParameter->select(direction.toString() = 'in')->notEmpty())][if (aClass.hasTemplateSignature())], [/if][aClass.getConstructorMethod().genPhpMethodDeclarationParameters()/][/if])
     {
         [if (aClass.hasTemplateSignature())]
         [for (aParameter: TemplateParameter | aClass.getTemplateParameters()) after('\n')]
@@ -56,18 +56,14 @@ use [aClassifier.getUsePath()/];
         // [/protected]
     }
 
-    public function __destruct()
-    {
-        // [protected (aClass.name.concat('.'.concat('destructor')))]
-        // [/protected]
-    }
-    [else]
+    [/if]
+    [if (aClass.getGenerals()->notEmpty())]
     // [protected (aClass.name.concat('.'.concat('surchargedConstructorsDestructors')))]
     // Surcharge Constructors and Destructors here
     // [/protected]
+
     [/if]
     [if (aClass.hasTemplateSignature())]
-    
     [for (aParameter: TemplateParameter | aClass.getTemplateParameters()) separator('\n')]
     /**
      * [aParameter.ownedElement->selectByType(Class).name/] type getter
@@ -108,15 +104,16 @@ use [aClassifier.getUsePath()/];
             );
         }
     }
+
     [/if]
-    [for (aProperty: Property | aClass.attribute) before('\n') separator('\n') ? (not aProperty.isReadOnly) ]
+    [for (aProperty: Property | aClass.attribute) separator('\n') ? (not aProperty.isReadOnly) ]
     [aProperty.genPhpPropertyGetterDeclaration()/]
     [aProperty.genPhpPropertyGetterContent()/]
 
     [aProperty.genPhpPropertySetterDeclaration()/]
     [aProperty.genPhpPropertySetterContent()/]
     [/for]
-    [for (aOperation: Operation | aClass.getOperations()) before('\n') separator('\n') ]
+    [for (aOperation: Operation | aClass.getOperations()->reject(o: Operation | o.name = aClass.name)) before('\n') separator('\n') ]
     [aOperation.genPhpMethodDeclaration()/]
     [aOperation.genPhpMethodContent()/]
     [/for]

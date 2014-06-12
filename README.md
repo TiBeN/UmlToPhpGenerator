@@ -1,15 +1,15 @@
 # UMLToPHP Generator
 
-A php sources class/interface generator from EMF (Eclipse Modeling Framework) UML Models.
-It has been written using the great Acceleo eclipse plugin. 
+A php sources class/interface generator from UML Models in XMI.
+It has been written using the great Acceleo eclipse plugin.
 
 ## Features
-- Generate classes and interfaces skeletons from any EMF UML Model (made with Papyrus for example).
+- Generate classes and interfaces skeletons from any UML Model in XMI (made with Papyrus or PlantUML for example).
 - Make sure the handwritten code inside generated classes methods is not erased after each generation (thanks to Acceleo engine).
 - Generate PSR0 Compatible class name and file structure.
 - Map UML class packages as php namespaces.
-- Convert well multiplicities of classifier properties like "\*..n" to php arrays 
-- Handle UML dependencies, generalisations, associations, realisation and interface realisations
+- Convert well multiplicities of classifier properties like "\*..n" to php arrays.
+- Handle UML dependencies, generalisations, associations, realisation and interface realisations.
 - Handle class/interface templates using some design pattern that mimic the use of generics / templates in PHP.
 - Map primitive datatypes with PHP equivalents.
 - Can optionnaly generate PHPUnit units tests skeletons.
@@ -37,7 +37,7 @@ $ mvn exec:java -Dumltophp.model="/path/to/your/model/file.uml" -Dumltophp.out="
 where `/path/to/your/model/file.uml` is the path to your dot uml model file made with some eclipse EMF compatible tool like Papyrus and `/out` is the output path where the PHP classes will be generated. 
 
 For the generator handle your UML model correctly, you should consider some rules :
-- Place all your UML components inside a root named "Model" package in your UML model. (this is a temporary limitation, see TODO.md)
+- Place all your model components inside a root Package named "Model" in your UML model. (this is a temporary limitation, see TODO.md)
 - The use of UML profiles has not been well tested, specially using the stand alone generator. So handling of models with profiles is not guaranteed. 
 - Despite some special stereotypes names (see documentation when it will be written), stereotypes applied to classifiers have no meanings nor effects on the generation.
 
@@ -65,5 +65,3 @@ The initial complexity of the eclipse modeling tools and environnment is a littl
 I started to write some simple acceleo template in order to convert my framework's UML model into PHP classes. As my initial project evolve i encountered a lot of different cases to handle like generating interfaces, class extends, interface implementation, template typed classes, multiplicity and so on, making the generator more and more generic and become usable for differents kinds of projects. 
 
 So, despite some issues about the build, the lack of documentation and the need of some minor improvements to be used in production i decided to share it on github.
-
-
